@@ -1,3 +1,4 @@
+import { UserAlreadyExistsError } from '@/use-cases/erros/user-already-exists-error'
 import { PrismaUsersRepository } from '../../repositories/prisma/prima-users-repository'
 import { RegisterUseCase } from '@/use-cases/register'
 import { FastifyReply, FastifyRequest } from 'fastify'
@@ -17,7 +18,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     const registerUseCase = new RegisterUseCase(usersRepository)
     await registerUseCase.execute({ name, email, password })
   } catch (err) {
-    return reply.status(409).send()
+    if (err instanceof UserAlreadyExistsError) {
+      return reply.status(409).send({ message: err.message })
+    } else {
+      return reply.status(500) // TODO: fix me
+    }
   }
 
   return reply.status(201).send()
