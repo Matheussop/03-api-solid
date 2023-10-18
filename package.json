@@ -1,7 +1,7 @@
 {
   "name": "03-api-solid",
   "version": "1.0.0",
-  "description": "GynPas style app.",
+  "description": "GynPass style app.",
   "main": "index.js",
   "scripts": {
     "start:dev": "tsx watch src/server.ts",
